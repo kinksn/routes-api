@@ -1,11 +1,7 @@
 import './App.css'
-import { useState } from 'react';
-import ComputeRoute from './ComputeRoute';
-import ComputeRouteMatrix from './ComputeRouteMatrix';
 
-function App() {
+function ComputeRoute() {
 
-  const [res, setRes] = useState('');
   const handleClick = async() => {
     const apiUrl = 'https://routes.googleapis.com/directions/v2:computeRoutes';
     const apiKey = import.meta.env.VITE_ROUTES_API_KEY;
@@ -59,8 +55,7 @@ function App() {
       }
 
       const data = await response.json();
-      setRes(data);
-      console.log(data); // Do something with the data here
+      console.log(data);
     } catch (error) {
       console.error('An error occurred:', error);
     }
@@ -69,10 +64,11 @@ function App() {
 
   return (
     <>
-        <ComputeRoute />
-        <ComputeRouteMatrix />
+        <button onClick={() => handleClick()}>
+          compute route post
+        </button>
     </>
   )
 }
 
-export default App
+export default ComputeRoute
