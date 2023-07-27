@@ -16,8 +16,7 @@ function ComputeRouteMatrix() {
                 longitude: -122.081356
               }
             }
-          },
-          routeModifiers: { "avoid_ferries": true}
+          }
         },
         {
           waypoint: {
@@ -27,8 +26,7 @@ function ComputeRouteMatrix() {
                 longitude: -122.097371
               }
             }
-          },
-          routeModifiers: { "avoid_ferries": true}
+          }
         }
       ],
       destinations: [

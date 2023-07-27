@@ -1,12 +1,15 @@
 import './App.css'
 import ComputeRoute from './ComputeRoute';
 import ComputeRouteMatrix from './ComputeRouteMatrix';
+import GenerateAdressFromPostCode from './GenerateAdressFromPostCode';
 
 function App() {
   return (
     <>
-        <ComputeRoute />
+        {/* <ComputeRoute />
         <ComputeRouteMatrix />
+        <hr /> */}
+        <GenerateAdressFromPostCode />
     </>
   )
 }
