@@ -1,17 +1,21 @@
 import './App.css'
 import { useState } from 'react';
+import { GeocodingResponse } from './types';
+import { GoogleMap } from './GoogleMap';
 
 function GenerateAdressFromPostCode() {
+    
     const [postcode, setPostcode] = useState('');
     const [address, setAddress] = useState('');
 
-    const handleOnchange = (e: any) => {
+    const handleOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPostcode(() => e.target.value)
     }
 
-    const getAdress = (data: any) => {
+    const getAdress = (data: GeocodingResponse) => {
+        console.log(data)
         const addressComponents = data.results[0].address_components;
-        return `${addressComponents[3].long_name}${addressComponents[2].long_name}${addressComponents[1].long_name}`
+        return `${addressComponents[3]?.long_name}${addressComponents[2]?.long_name}${addressComponents[1]?.long_name}`
     }
     
     const handleSubmit = async() => {
@@ -37,11 +41,12 @@ function GenerateAdressFromPostCode() {
         <div>
             <div>
                 <input value={postcode} onChange={handleOnchange} type="text" />
-                <button onClick={() => handleSubmit()}>
+                <button onClick={() => postcode && handleSubmit()}>
                     get adress
                 </button>
             </div>
             <div>{address}</div>
+            <GoogleMap />
         </div>
     )
 }
