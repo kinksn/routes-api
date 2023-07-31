@@ -46,7 +46,7 @@ function GenerateAdressFromPostCode() {
                 </button>
             </div>
             <div>{address}</div>
-            <GoogleMap />
+            <GoogleMap postcode={postcode} />
         </div>
     )
 }

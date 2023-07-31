@@ -4,7 +4,7 @@ function ComputeRoute() {
 
   const handleClick = async() => {
     const apiUrl = 'https://routes.googleapis.com/directions/v2:computeRoutes';
-    const apiKey = import.meta.env.VITE_ROUTES_API_KEY;
+    const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
     const body = {
       origin: {

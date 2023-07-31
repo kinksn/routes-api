@@ -4,7 +4,7 @@ function ComputeRouteMatrix() {
 
   const handleClick = async() => {
     const apiUrl = 'https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix';
-    const apiKey = import.meta.env.VITE_ROUTES_API_KEY;
+    const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
     const body = {
       origins: [
