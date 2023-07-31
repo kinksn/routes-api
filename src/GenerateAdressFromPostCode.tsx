@@ -5,8 +5,8 @@ import { GoogleMap } from './GoogleMap';
 
 function GenerateAdressFromPostCode() {
     
-    const [postcode, setPostcode] = useState('');
-    const [address, setAddress] = useState('');
+    const [postcode, setPostcode] = useState<string>('');
+    const [address, setAddress] = useState<string>('');
 
     const handleOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPostcode(() => e.target.value)
@@ -31,7 +31,6 @@ function GenerateAdressFromPostCode() {
 
             const data = await response.json();
             setAddress(() => getAdress(data));
-            setPostcode('');
         }   catch (error) {
             console.error('An error occurred:', error);
         }
@@ -46,7 +45,7 @@ function GenerateAdressFromPostCode() {
                 </button>
             </div>
             <div>{address}</div>
-            <GoogleMap postcode={postcode} />
+            { address && <GoogleMap address={address} />}
         </div>
     )
 }
