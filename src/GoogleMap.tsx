@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 
-export const GoogleMap = (props: { address: string }) => {
+type GoogleMapProps = {
+  address: string;
+  setAddress: (value: string) => void;
+}
+
+export const GoogleMap = ({ address, setAddress }: GoogleMapProps) => {
   const [_, setLatlng] = useState<{lat: number, lng: number} | null>(null);
 
   const mapRef = useRef(null);
@@ -20,16 +25,8 @@ export const GoogleMap = (props: { address: string }) => {
       const geocoder = new google.maps.Geocoder();
       
 
-      geocoder.geocode( { address: props.address, language: 'ja'}, (results, status) => {
+      geocoder.geocode( { address: address, language: 'ja'}, (results, status) => {
         if (status === google.maps.GeocoderStatus.OK) {
-
-          const geocodeLatLng = (geocoder, latlng) => {
-            if (results[0]) {
-              console.log(results[0].formatted_address);
-            } else {
-              console.log('No results found');
-            }
-          }
 
           const newLatLng = {
             lat: results[0].geometry.location.lat(),
@@ -39,7 +36,7 @@ export const GoogleMap = (props: { address: string }) => {
           setLatlng(newLatLng)
 
           const map = new google.maps.Map(mapRef.current, {
-            zoom: 16,
+            zoom: 17,
             center: newLatLng,
             mapId: "DEMO_MAP_ID",
           });
@@ -57,12 +54,17 @@ export const GoogleMap = (props: { address: string }) => {
               lng: event.latLng.lng(),
             };
             const geocoder = new google.maps.Geocoder;
+            console.log(updatedLatLng);
 
             // languageオプションを追加
-            geocoder.geocode({ 'location': updatedLatLng, 'language': 'ja' }, function(results, status) {
+            geocoder.geocode({ 'location': updatedLatLng, 'language': 'ja' }, (results, status) => {
               if (status === 'OK') {
                 if (results[0]) {
-                  console.log(results[0].formatted_address);
+                  const updateAddress = results[0].formatted_address
+                                        .split(' ')
+                                        .slice(-1)[0]
+                                        .replace('日本、', '');
+                  setAddress(updateAddress);
                 } else {
                   console.log('No results found');
                 }
@@ -80,11 +82,11 @@ export const GoogleMap = (props: { address: string }) => {
       })
 
     });
-  }, [props.address]);
+  }, [address]);
 
   return (
     <>
-      <div ref={mapRef} style={{ height: "50vh", width: "100%" }} />
+      <div ref={mapRef} style={{ height: "50vh", width: "50vw" }} />
     </>
   );
 };
