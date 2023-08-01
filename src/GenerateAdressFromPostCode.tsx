@@ -13,7 +13,6 @@ function GenerateAdressFromPostCode() {
     }
 
     const getAdress = (data: GeocodingResponse) => {
-        console.log(data)
         const addressComponents = data.results[0].address_components;
         return `${addressComponents[3]?.long_name}${addressComponents[2]?.long_name}${addressComponents[1]?.long_name}`
     }
