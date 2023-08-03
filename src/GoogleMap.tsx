@@ -7,7 +7,7 @@ type GoogleMapProps = {
 }
 
 export const GoogleMap = ({ address, setAddress }: GoogleMapProps) => {
-  const [_, setLatlng] = useState<{lat: number, lng: number} | null>(null);
+  const [, setLatlng] = useState<{lat: number, lng: number} | null>(null);
 
   const mapRef = useRef(null);
 
@@ -21,12 +21,12 @@ export const GoogleMap = ({ address, setAddress }: GoogleMapProps) => {
       if (!mapRef.current) {
         return;
       }
-
+      
       const geocoder = new google.maps.Geocoder();
       
 
       geocoder.geocode( { address: address, language: 'ja'}, (results, status) => {
-        if (status === google.maps.GeocoderStatus.OK) {
+        if (status === google.maps.GeocoderStatus.OK && results !== null ) {
 
           const newLatLng = {
             lat: results[0].geometry.location.lat(),
@@ -35,7 +35,11 @@ export const GoogleMap = ({ address, setAddress }: GoogleMapProps) => {
           
           setLatlng(newLatLng)
 
-          const map = new google.maps.Map(mapRef.current, {
+          if (!mapRef.current) {
+            return;
+          }
+
+          const map = new google.maps.Map( mapRef.current, {
             zoom: 17,
             center: newLatLng,
             mapId: "DEMO_MAP_ID",
@@ -48,22 +52,26 @@ export const GoogleMap = ({ address, setAddress }: GoogleMapProps) => {
           });
 
           // マーカーのドラッグが終了した時点の緯度経度をコンソールに出力
-          marker.addListener("dragend", function (event) {
+          marker.addListener("dragend", function (event: google.maps.MapMouseEvent) {
+
+            if (event.latLng === null) { return; }
+
             const updatedLatLng = {
               lat: event.latLng.lat(),
               lng: event.latLng.lng(),
             };
             const geocoder = new google.maps.Geocoder;
-            console.log(updatedLatLng);
+            console.log('緯度経度',updatedLatLng);
 
             // languageオプションを追加
             geocoder.geocode({ 'location': updatedLatLng, 'language': 'ja' }, (results, status) => {
-              if (status === 'OK') {
+              if (status === 'OK' && results !== null) {
                 if (results[0]) {
-                  const updateAddress = results[0].formatted_address
-                                        .split(' ')
-                                        .slice(-1)[0]
-                                        .replace('日本、', '');
+                  const updateAddress =
+                    results[0].formatted_address
+                    .replace('日本、', '')
+                    .split(' ')[1];
+                    
                   setAddress(updateAddress);
                 } else {
                   console.log('No results found');
@@ -73,7 +81,6 @@ export const GoogleMap = ({ address, setAddress }: GoogleMapProps) => {
               }
             });
             setLatlng(updatedLatLng);
-            // geocodeLatLng(geocoder, updatedLatLng)
           });
 
         } else {
