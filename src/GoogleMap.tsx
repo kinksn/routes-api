@@ -1,13 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Loader } from "@googlemaps/js-api-loader";
+import React, { useEffect, useRef } from "react";
+import { Loader } from "@googlemaps/js-api-loader"; 
 
 type GoogleMapProps = {
   address: string;
   setAddress: (value: string) => void;
+  setLatlng: (value: { lat: number, lng: number } | null) => void;
 }
 
-export const GoogleMap = ({ address, setAddress }: GoogleMapProps) => {
-  const [, setLatlng] = useState<{lat: number, lng: number} | null>(null);
+
+export const GoogleMap = ({ address, setAddress, setLatlng }: GoogleMapProps) => {
 
   const mapRef = useRef(null);
 

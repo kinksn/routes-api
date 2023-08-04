@@ -1,10 +1,10 @@
 import './App.css'
-import GenerateAdressFromPostCode from './GenerateAdressFromPostCode';
+import PostalCodeToMap from './PostalCodeToMap';
 
 function App() {
   return (
     <>
-        <GenerateAdressFromPostCode />
+        <PostalCodeToMap />
     </>
   )
 }

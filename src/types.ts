@@ -1,9 +1,10 @@
-export interface GeocodingResponse {
+// Geocoding API
+export type GeocodingResponse = {
     results: GeocodingResult[];
     status: string;
 }
 
-export interface GeocodingResult {
+type GeocodingResult = {
     address_components: AddressComponent[];
     formatted_address: string;
     geometry: Geometry;
@@ -11,26 +12,49 @@ export interface GeocodingResult {
     types: string[];
 }
 
-export interface AddressComponent {
+type AddressComponent = {
     long_name: string;
     short_name: string;
     types: string[];
 }
 
-export interface Geometry {
+type Geometry = {
     bounds: Viewport;
     location: Location;
     location_type: string;
     viewport: Viewport;
 }
 
-export interface Location {
+type Location = {
     lat: number;
     lng: number;
 }
 
-export interface Viewport {
+type Viewport = {
     northeast: Location;
     southwest: Location;
 }
-  
+
+// zipcloud
+type ZipcloudErrorResponse = {
+    message: string;
+    results: null;
+    status: number;
+}
+
+export type ZipcloudSuccessResponse = {
+    message: null;
+    results: Array<{
+        address1: string;
+        address2: string;
+        address3: string;
+        kana1: string;
+        kana2: string;
+        kana3: string;
+        prefcode: string;
+        zipcode: string;
+    }>;
+    status: number;
+}
+
+export type ZipcloudResponse = ZipcloudErrorResponse | ZipcloudSuccessResponse;
