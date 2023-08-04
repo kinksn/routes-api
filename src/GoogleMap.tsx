@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Loader } from "@googlemaps/js-api-loader"; 
 
 type GoogleMapProps = {
@@ -24,7 +24,6 @@ export const GoogleMap = ({ address, setAddress, setLatlng }: GoogleMapProps) =>
       }
       
       const geocoder = new google.maps.Geocoder();
-      
 
       geocoder.geocode( { address: address, language: 'ja'}, (results, status) => {
         if (status === google.maps.GeocoderStatus.OK && results !== null ) {

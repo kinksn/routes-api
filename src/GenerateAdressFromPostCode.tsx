@@ -1,5 +1,5 @@
 import './App.css'
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { GeocodingResponse, ZipcloudResponse, ZipcloudSuccessResponse } from './types';
 
 type AddressResult = ZipcloudSuccessResponse['results'][0];
@@ -31,7 +31,6 @@ function GenerateAdressFromPostCode({ postcode, setPostcode, address, setAddress
             const response: ZipcloudResponse = await rawResponse.json();
 
             if (response.status === 200 && response.results !== null) {
-                // console.log(response.results);
                 setSelectedAddress(response.results);
             } else {
                 console.log(response.message);
@@ -75,7 +74,7 @@ function GenerateAdressFromPostCode({ postcode, setPostcode, address, setAddress
     
     const handleSubmit = async() => {
         const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-        const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${postcode}&language=ja&components=country:JP&key=${apiKey}`;
+        const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${postcode}&language=ja&region=jp&components=country:JP&key=${apiKey}`;
 
         if (!isValidPostcode(postcode)) {
             alert('無効な郵便番号です');
