@@ -13,7 +13,7 @@ export const GoogleMap = ({ address, setAddress, setLatlng }: GoogleMapProps) =>
   const markerInstance = useRef<google.maps.Marker | null>(null);
 
   const geocodeAddress = useCallback((address: string, geocoder: google.maps.Geocoder, resultsCallback: (result: google.maps.GeocoderResult) => void) => {
-    geocoder.geocode({ 'address': address }, (results, status) => {
+    geocoder.geocode({ 'address': address, componentRestrictions: { country: 'JP' } }, (results, status) => {
       if (status === google.maps.GeocoderStatus.OK && results !== null) {
         resultsCallback(results[0]);
       } else {
@@ -28,6 +28,7 @@ export const GoogleMap = ({ address, setAddress, setLatlng }: GoogleMapProps) =>
       lat: event.latLng?.lat() || 0,
       lng: event.latLng?.lng() || 0,
     };
+
     geocoder.geocode({ 'location': updatedLatLng, 'language': 'ja' }, (results, status) => {
       if (status !== 'OK' || !results) {
         console.log(`Geocoder failed: ${status}`);

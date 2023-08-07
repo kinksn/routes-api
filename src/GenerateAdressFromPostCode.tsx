@@ -1,5 +1,5 @@
 import './App.css'
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { GeocodingResponse, ZipcloudResponse, ZipcloudSuccessResponse } from './types';
 
 type AddressResult = ZipcloudSuccessResponse['results'][0];
@@ -9,7 +9,7 @@ type GenerateAdressFromPostCodeProps = {
     setPostcode: (value: string) => void;
     address: string;
     setAddress: (value: string) => void;
-  }
+}
 
 function GenerateAdressFromPostCode({ postcode, setPostcode, address, setAddress }: GenerateAdressFromPostCodeProps)  {
     const [selectedAddress, setSelectedAddress] = useState<AddressResult[] | null>(null);
@@ -40,7 +40,12 @@ function GenerateAdressFromPostCode({ postcode, setPostcode, address, setAddress
         }
     }
 
-    const selectAddressList = (selectedAddress: AddressResult[] | null) => {
+    const handleSelectedAddress = useCallback((address: string) => {
+        setAddress(address);
+        setSelectedAddress(null);
+    }, [setAddress]);
+
+    const selectAddressList = useCallback((selectedAddress: AddressResult[] | null) => {
         if (selectedAddress === null) {
             return;
         }
@@ -48,12 +53,7 @@ function GenerateAdressFromPostCode({ postcode, setPostcode, address, setAddress
             const address = item.address1 + item.address2 + item.address3
             return <li key={index} onClick={() => handleSelectedAddress(address)}>{address}</li>
         })
-    };
-
-    const handleSelectedAddress = (address: string) => {
-        setAddress(address);
-        setSelectedAddress(null);
-    }
+    }, [handleSelectedAddress]);
 
     const getAdress = (data: GeocodingResponse) => {
         const addressComponents = data.results[0].address_components;
@@ -77,7 +77,7 @@ function GenerateAdressFromPostCode({ postcode, setPostcode, address, setAddress
         const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${postcode}&language=ja&region=jp&components=country:JP&key=${apiKey}`;
 
         if (!isValidPostcode(postcode)) {
-            alert('無効な郵便番号です');
+            alert('invalid postal code');
             return;
         }
 
